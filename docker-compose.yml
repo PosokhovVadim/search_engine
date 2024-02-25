@@ -9,5 +9,3 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - cluster.routing.allocation.disk.threshold_enabled=false
-    # volumes:
-    #   - /Users/danila/Desktop/elasticsearch/synonyms.txt:/usr/share/elasticsearch/data/synonyms.txt

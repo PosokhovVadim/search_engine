@@ -33,7 +33,7 @@ func run() error {
 		}
 
 	}
-	results, err := es.Search(engine.Index, "черные толстовки от diesel")
+	results, err := es.Search(engine.Index, "кртка зима")
 	if err != nil {
 		log.Fatalf("Error searching: %s", err)
 	}

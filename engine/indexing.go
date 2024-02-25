@@ -61,8 +61,7 @@ func (es *ElasticSearch) SettingsIndex(index string) error {
 					"analyzer": "text_analyzer"
 				},
 				"properties": {
-					"type": "text",
-					"analyzer": "text_analyzer"
+					"type": "text"
 				}
 			}
 		},

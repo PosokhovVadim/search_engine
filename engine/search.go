@@ -15,12 +15,90 @@ func (es *ElasticSearch) Search(index, query string) ([]model.Item, error) {
 		Index: []string{index},
 		Body: strings.NewReader(fmt.Sprintf(`{
 			"query": {
-				"multi_match": {
-					"query": "%s",
-					"fields": ["brand^2", "category^4", "full-name", "color^2", "properties"],
-					"type": "most_fields",
-					"fuzziness": "2"
+				"bool": {
+					"must": [
+						{
+							"multi_match": {
+								"query": "%s",
+								"fields": ["brand^2", "category^4", "full-name", "color^2", "properties^2"],
+								"type": "most_fields",
+								"fuzziness": "2"
+							}
+						}		
+					],
+					"should": [
+						{
+						  "bool": {
+							"must": [
+							  {
+								"match_phrase": {
+								  "properties": {
+									"query": "сезонность зима",
+									"boost": 5
+								  }
+								}
+							  }
+							]
+						  }
+						},
+						{
+						  "bool": {
+							"must": [
+							  {
+								"match_phrase": {
+								  "properties": {
+									"query": "сезонность лето",
+									"boost": 5
+								  }
+								}
+							  }
+							]
+						  }
+						},
+						{
+						  "bool": {
+							"must": [
+							  {
+								"match_phrase": {
+								  "properties": {
+									"query": "сезонность весна",
+									"boost": 2
+								  }
+								}
+							  }
+							]
+						  }
+						},
+						{
+							"bool": {
+							  "must": [
+								{
+								  "match_phrase": {
+									"properties": {
+									  "query": "сезонность осень",
+									  "boost": 2
+									}
+								  }
+								}
+							  ]
+							}
+						  },
+						{
+						  "bool": {
+							"must": [
+							  {
+								"match_phrase": {
+								  "properties": {
+									"query": "сезонность осень-зима",
+									"boost": 1.2
+								  }
+								}
+							  }
+							]
+						  }
+						}
 
+					  ]
 				}
 			}
 		}`, query)),
